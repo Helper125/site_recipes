@@ -25,3 +25,7 @@ Thumbs.db
 # Міграції
 */migrations/*.pyc
 */migrations/__pycache__/
+
+.gitignore
+
+.ideas.todo
