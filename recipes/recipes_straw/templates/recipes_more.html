@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'recipes_more.css' %}">
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container">
+    <div class="cart-wapper">
+        <h1>{{ recipe.name_ua }}</h1>
+        <div class="cart-body">
+            <p>{{ recipe.description_ua }}</p>
+        </div>
+    </div>
+    <div class="cart-wapper2">
+        <div class="cart-body2">
+            <h1>Інструкція</h1>
+            <p>{{ recipe.instruction_ua }}</p>
+        </div>
+    </div>
+    {% if user.is_authenticated %}
+    <form method="post">
+    {% csrf_token %}
+    <input type="text" name="comment" placeholder="Напишіть коментар..." required>
+    <button type="submit">Додати</button>
+    </form>
+    {% endif %}
+    <div class="comments">
+        {% if comment %}
+            {% for comment in comment %}
+                <div class="comment">
+                    <div class="user">{{ comment.user }}</div>
+                    <div class="text">{{ comment.comment }}</div>
+                    <div class="date">{{ comment.created_at }}</div> 
+
+                    {% if request.user == comment.user %}
+                        <a href="{% url 'delete_comment' comment.id %}">Видалити</a>
+                    {% endif %}
+                    <!-- {% for reaction in reactions %}
+                        <h1 class="reactions">Likes - {{ reaction.likes }}</h1>
+                        <h1>dislikes - {{ reaction.dislike }}</h1>
+                        <a href="{% url 'delete_comment' comment.id %}">like</a>
+                    {% endfor %} -->
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="comment">
+                <h1 class="text">Немає коментарів</h1>
+            </div>
+        {% endif %}
+    </div>
+    <div class="paginator">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}">&lt;</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+        {% endif %}
+        Номер №{{ page.number }} з №{{ page.paginator.num_pages }}
+
+        {% if page.has_next %}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="?page={{ page.next_page_number }}">&gt;</a>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

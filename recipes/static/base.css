@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    background-image: url("https://gas-kvas.com/uploads/posts/2023-01/thumbs/1673921034_gas-kvas-com-p-kletochki-tetradnie-risunki-4.png");
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 16px;
+}
+
+.a_li {
+    display: inline-block;
+    padding: 10px 24px;
+    margin-left: 8px;
+    background-color: #007bff;
+    border: 3px solid black;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.a_li:hover {
+    background-color: #0056b3;
+    border: 2px solid black;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1; /* Займає весь доступний простір */
+}
+
+footer {
+    background-color: #999B9B;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    
+}
+
+
+@media (max-width: 600px) {
+    li {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .a_li {
+        width: 100%;
+        margin: 5px 0;
+        text-align: center;
+    }
+
+}

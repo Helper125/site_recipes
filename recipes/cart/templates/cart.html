@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+<!-- {% load static %} -->
+<!-- <link rel="stylesheet" href="{% static '.css' %}"> -->
+{% block content %}
+{{ block.super }}
+<h2>Кошик</h2>
+
+{% if cart %}
+    <ul>
+        {% for id, item in cart.items %}
+            <li>
+                {{ item.name }}
+                <a href="{% url 'cart_remove' id %}">[Видалити]</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Кошик порожній.</p>
+{% endif %}
+    <a href="{% url 'index_ua' %}">Home_ua</a>
+{% endblock %}

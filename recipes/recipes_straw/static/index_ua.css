@@ -1,0 +1,68 @@
+.cart-wrapper {
+    display: flex;
+    flex-wrap: wrap;       
+    gap: 20px;             
+    justify-content: center; 
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.cart {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 18rem;           /* як ти і вказав */
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.cart:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.cart img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-body {
+    padding: 10px 15px;
+}
+
+.cart-body p {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.recipes_more {
+    display: block;
+    text-align:center;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    background-color: rgba(0, 255, 64, 0.338);
+    border-radius: 20px;
+    height: 25px;
+    width: 150px;;
+    border: 2px solid rgb(130, 130, 253);
+    margin-left: 50px;
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 48%;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+    }
+}

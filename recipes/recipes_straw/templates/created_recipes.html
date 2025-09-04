@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ block.super }}
+<form method="post">
+    {% csrf_token %}
+    <label>Заголовок Укр.</label>
+    <input type="text" name="name">
+    <label>Рецепт Укр.</label>
+    <textarea id="description" name="description" rows="6" cols="50"></textarea>
+    <label>Інструкція приготування</label>
+    <textarea id="instruction" name="instruction" rows="6" cols="50"></textarea>
+    <label>Силка на фотографію</label>
+    <input type="text" name="img">
+    <button type="submit">Зберегти</button>
+</form>
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Django
+db.sqlite3
+/static/
+/media/
+
+# VS Code
+.vscode/
+
+# Середовище
+.env
+
+# Логи
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Міграції
+*/migrations/*.pyc
+*/migrations/__pycache__/

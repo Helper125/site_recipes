@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'index_ua.css' %}">
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <a href="{% url 'cart_detail' %}">Кошик</a>
+    <form action="{% url 'index_ua' %}">
+        <input type="search" name="search">
+        <button type="submit">Пошук</button>
+    </form>
+    <div class="cart-wrapper">
+        {% for recipe in recipes %}
+            <div class="cart" style="width: 18rem; height: 18rem;">
+                <img src="{{ recipe.img }}" alt="{{ recipe.name_ua }}" style="width: 18rem; height: 12rem;">
+                <div class="cart-body">
+                    <p>{{ recipe.name_ua }}</p>
+                    <a href="{% url 'recipes_more' recipe.id %}" class="recipes_more">читати більше</a>
+                    <a href="{% url 'cart_add' recipe.id %}">Додати в кошик</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="paginator">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}">&lt;</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+        {% endif %}
+        Номер №{{ page.number }} з №{{ page.paginator.num_pages }}
+        
+        {% if page.has_next %}
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="?page={{ page.next_page_number }}">&gt;</a>
+        {% endif %}
+    </div>
+{% endblock %}
