@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+<!-- {% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'recipes_more.css' %}">
+{% endblock %} -->
+
+{% block content %}
+{{ block.super }}
+    <div>
+        <img src="{{ user_profile.photos_profil.url }}" alt="photos_profil" style="width: 100px; height: 100px; border-radius: 60%;"></img>
+        <h1>{{ user_profile.username }} ({{ user_profile.code_user }})</h1>
+        <h1>{{ user_profile.email }}</h1>
+        <h1>{{ user_profile.status }}</h1>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label>update name</label>
+            <input type="text" name="username">
+            <label>update photo</label>
+            <input type="file" name="photos_profil">
+            <button type="submit" name="reset_photo" value="1">reset photo</button>
+            <button type="submit">save</button>
+        </div>
+    </form>
+{% endblock %}

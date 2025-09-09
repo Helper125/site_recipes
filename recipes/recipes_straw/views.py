@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, logout as auth_logout, login as au
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-from .models import Recipes_UA_EN, CommentUsers
+from .models import Recipes_UA_EN, CommentUsers, CustomUser
 from .forms import Register
 
 import logging
@@ -28,8 +28,8 @@ genai.configure(api_key=GIMINI_KEY)
 model = genai.GenerativeModel("models/gemini-1.5-flash")
 
 def index_ua(request):
-    logging.debug("good")
-    logging.error("problem")
+    # logging.debug("good")
+    # logging.error("problem")
     search_recipes = request.GET.get('search')
     if search_recipes:
         recipes = Recipes_UA_EN.objects.filter(name_ua__iregex=search_recipes) | Recipes_UA_EN.objects.filter(name_en__iregex=search_recipes)
@@ -40,7 +40,7 @@ def index_ua(request):
         page_num = request.GET.get('page', 2)
     else:
         page_num = 1
-    page = paginator.get_page(page_num) 
+    page = paginator.get_page(page_num)
     return render(request, 'index_ua.html', {"recipes":page.object_list, "page":page })
 
 def index_en(request):
@@ -59,10 +59,33 @@ def index_en(request):
     page = paginator.get_page(page_num)
     return render(request, 'index_en.html', {"recipes":page.object_list, "page":page})
 
+def update_recipes(request, id_recipes):
+    update_recipes = Recipes_UA_EN.objects.get(id=id_recipes)
+
+    if request.method == "POST":
+        name_ua = request.POST.get('name_ua')
+        if name_ua:
+            update_recipes.name_ua = name_ua
+            update_recipes.name_en = Gimini_transtale(name_ua)
+        description_ua = request.POST.get('description_ua')
+        if description_ua:
+            update_recipes.description_ua = description_ua
+            update_recipes.description_en = Gimini_transtale(description_ua)
+        instruction_ua = request.POST.get('instruction_ua')
+        if instruction_ua:
+            update_recipes.instruction_ua = instruction_ua
+            update_recipes.instruction_en = Gimini_transtale(instruction_ua)
+        img = request.FILES.get('img')
+        if img:
+            update_recipes.img = img
+        update_recipes.save()
+        return redirect('index_ua')
+    return render(request, 'update_recipes.html')
+
 
 def registerUser(request):
     if request.method == "POST":
-        form = Register(request.POST)
+        form = Register(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
@@ -80,10 +103,10 @@ def logout(request):
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=email, password=password)
         if user is not None:
             auth_login(request, user)
             return redirect("index_ua")
@@ -95,7 +118,7 @@ def login(request):
 
 def recipes_more(request, id):
     recipe = get_object_or_404(Recipes_UA_EN, id=id)
-    comment = CommentUsers.objects.filter(recipe=recipe)
+    comment = CommentUsers.objects.filter(recipe=recipe).order_by('-created_at')
     paginator = Paginator(comment, 10)
     if 'page' in request.GET:
         page_num = request.GET.get('page', 2)
@@ -116,7 +139,7 @@ def recipes_more(request, id):
 
 def recipes_more_en(request, id):
     recipe = get_object_or_404(Recipes_UA_EN, id=id)
-    comment = CommentUsers.objects.filter(recipe=recipe)
+    comment = CommentUsers.objects.filter(recipe=recipe).order_by('-created_at')
     paginator = Paginator(comment, 10)
     if 'page' in request.GET:
         page_num = request.GET.get('page', 2)
@@ -160,7 +183,7 @@ def translation_bd(request):
         name_ua = request.POST.get('name')
         description_ua = request.POST.get('description')
         instruction_ua = request.POST.get('instruction')
-        img = request.POST.get('img')
+        img = request.FILES.get('img')
 
         try:
             name_en = Gimini_transtale(name_ua)
@@ -181,3 +204,22 @@ def translation_bd(request):
             messages.error(request, f"error: {e}")
 
     return render(request, 'created_recipes.html')
+
+
+def user_profil(request, id_user):
+    user_profile = get_object_or_404(CustomUser, id=id_user)
+    updates = CustomUser.objects.get(id=id_user)
+    if request.method == "POST":
+        username = request.POST.get('username')
+        if username:
+            updates.username = username
+        photos_profil = request.FILES.get('photos_profil')
+        if photos_profil:
+            updates.photos_profil = photos_profil
+
+        if request.POST.get('reset_photo'):
+            updates.photos_profil = 'img_profil/default.jpg'
+
+        updates.save()
+        return redirect('myprofil', id_user=id_user)
+    return render(request, 'profil.html', {"user_profile":user_profile})

@@ -7,7 +7,7 @@
 
 {% block content %}
     {{ block.super }}
-    <a href="{% url 'cart_detail' %}">Кошик</a>
+    <a href="{% url 'cart_detail' %}">обране</a>
     <form action="{% url 'index_ua' %}">
         <input type="search" name="search">
         <button type="submit">Пошук</button>
@@ -15,11 +15,14 @@
     <div class="cart-wrapper">
         {% for recipe in recipes %}
             <div class="cart" style="width: 18rem; height: 18rem;">
-                <img src="{{ recipe.img }}" alt="{{ recipe.name_ua }}" style="width: 18rem; height: 12rem;">
+                <img src="{{ recipe.img.url }}" alt="{{ recipe.name_ua }}" style="width: 18rem; height: 12rem;">
                 <div class="cart-body">
                     <p>{{ recipe.name_ua }}</p>
-                    <a href="{% url 'recipes_more' recipe.id %}" class="recipes_more">читати більше</a>
-                    <a href="{% url 'cart_add' recipe.id %}">Додати в кошик</a>
+                    <a href="{% url 'recipes_more' recipe.id %}" class="recipes_more">Читати більше</a>
+                    {% if user.status == 'editior_user' or user.is_staff == True %}
+                    <a href="{% url 'update_recipes' recipe.id %}">Обновити</a>
+                    {% endif %}
+                    <a href="{% url 'cart_add' recipe.id %}">Додати в обраного</a>
                 </div>
             </div>
         {% endfor %}

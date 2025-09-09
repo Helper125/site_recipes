@@ -4,7 +4,7 @@
 <!-- <link rel="stylesheet" href="{% static '.css' %}"> -->
 {% block content %}
 {{ block.super }}
-<h2>Кошик</h2>
+<h2>Обране</h2>
 
 {% if cart %}
     <ul>
@@ -12,6 +12,7 @@
             <li>
                 {{ item.name }}
                 <a href="{% url 'cart_remove' id %}">[Видалити]</a>
+                <a href="{% url 'recipes_more' id %}" class="recipes_more">[Читати більше]</a>
             </li>
         {% endfor %}
     </ul>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ block.super }}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Заголовок Укр.</label>
+    <input type="text" name="name_ua">
+    <label>Рецепт Укр.</label>
+    <textarea id="description_ua" name="description" rows="6" cols="50"></textarea>
+    <label>Інструкція приготування</label>
+    <textarea id="instruction_ua" name="instruction" rows="6" cols="50"></textarea>
+    <label>фотографія</label>
+    <input type="file" name="img">
+    <button type="submit">Зберегти</button>
+</form>
+{% endblock %}
